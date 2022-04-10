@@ -1,0 +1,744 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Saúde UNASP",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/cadastro/validar/documento/{documento}": {
+            "get": {
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Validar documento",
+                "description": "Valida se documento é válido para cadastro",
+                "operationId": "706ca24c5d9369d129a03b17f5ec23bb",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "documento",
+                        "in": "path",
+                        "description": "CPF",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "cpfValido": {
+                                "summary": "CPF Válido",
+                                "value": "00000000191"
+                            },
+                            "cpfInvalido": {
+                                "summary": "CPF Inválido",
+                                "value": "00000000190"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Documento válido",
+                                        "value": {
+                                            "message": "Este documento é válido"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Documento é inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Documento Inválido",
+                                        "value": {
+                                            "message": "Este documento é inválido"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Documento já foi cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Documento Já Cadastrado",
+                                        "value": {
+                                            "message": "Este documento já foi cadastrado"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/cadastros": {
+            "get": {
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Listar cadastros",
+                "description": "Lista todos os cadastros",
+                "operationId": "245018355fc2e09b015fbb35c782c11d",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "ListaCadastro": {
+                                        "summary": "ListaCadastro",
+                                        "value": {
+                                            "cadastros": [
+                                                {
+                                                    "id": 1,
+                                                    "nomeCompleto": "João Silva",
+                                                    "dataNascimento": "1920-01-01",
+                                                    "sexo": "M",
+                                                    "cep": "05555000",
+                                                    "cpf": "12345678901",
+                                                    "uf": "SP",
+                                                    "cidade": "São Paulo",
+                                                    "logradouro": "Rua do teste",
+                                                    "numeroLogradouro": "202 A",
+                                                    "email": "joao@teste.com",
+                                                    "created_at": "2000-01-01T12:00:00.000000Z",
+                                                    "updated_at": "2000-01-01T12:00:00.000000Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Não tem conteúdo"
+                    }
+                }
+            }
+        },
+        "/api/v1/cadastro/{documento}": {
+            "get": {
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Consultar cadastro pelo documento",
+                "description": "Consultar cadastro pelo documento",
+                "operationId": "81bd906c97113cd1f0b1905660e54883",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "documento",
+                        "in": "path",
+                        "description": "CPF",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "cpfValido": {
+                                "summary": "Documento",
+                                "value": "00000000191"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CadastroResult"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "CadastroResult",
+                                        "value": {
+                                            "id": 1,
+                                            "nomeCompleto": "João Silva",
+                                            "dataNascimento": "1920-01-01",
+                                            "sexo": "M",
+                                            "cep": "05555000",
+                                            "cpf": "12345678901",
+                                            "uf": "SP",
+                                            "cidade": "São Paulo",
+                                            "logradouro": "Rua do teste",
+                                            "numeroLogradouro": "202 A",
+                                            "email": "joao@teste.com",
+                                            "created_at": "2000-01-01T12:00:00.000000Z",
+                                            "updated_at": "2000-01-01T12:00:00.000000Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Documento não cadastrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Apaga cadastro pelo documento",
+                "description": "Apaga cadastro pelo documento",
+                "operationId": "d74a0d6d685f1033b3527d7015a4cd11",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "documento",
+                        "in": "path",
+                        "description": "CPF",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "cpfValido": {
+                                "summary": "Documento",
+                                "value": "00000000191"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Cadastro apagado com sucesso"
+                    },
+                    "404": {
+                        "description": "Documento não cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErroResult"
+                                },
+                                "examples": {
+                                    "ErroResult": {
+                                        "summary": "ErroResult",
+                                        "value": {
+                                            "message": "Documento não cadastrado"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/cadastro": {
+            "post": {
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Salvar Cadastro",
+                "description": "Salva cadastro no sistema",
+                "operationId": "d8e7baa8a8bcc8bb67b5589e3d48b552",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "nomeCompleto": "João Silva",
+                                    "dataNascimento": "1920-01-01",
+                                    "sexo": "M",
+                                    "cep": "05555000",
+                                    "cpf": "00000000191",
+                                    "uf": "SP",
+                                    "cidade": "São Paulo",
+                                    "logradouro": "Rua do teste",
+                                    "numeroLogradouro": "202 A",
+                                    "email": "joao@teste.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cadastro realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Cadastro realizado com sucesso",
+                                        "value": {
+                                            "message": "Cadastro realizado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Campo enviado é inválidoo",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Campo inválido",
+                                        "value": {
+                                            "message": "Favor informar um E-mail válido"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Pré condição é inválida",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Este documento já foi cadastrado",
+                                        "value": {
+                                            "message": "Cadastro realizado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Entidade não processável",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "",
+                                        "value": {
+                                            "message": "O campo \"nome completo\" não pode ter menos de 5 caracteres.",
+                                            "errors": []
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/imc/calcular": {
+            "post": {
+                "tags": [
+                    "IMC"
+                ],
+                "summary": "Faz o cálculo do IMC",
+                "description": "Realiza o cálculo do imc",
+                "operationId": "7b1f15047a232839d9b2495ef0a49aa2",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "peso": "70.2",
+                                    "altura": "1.71"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Ok",
+                                        "value": {
+                                            "message": "Seu IMC é 20.2 Está classificado como Normal"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetros enviados são inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Entidade Não processável",
+                                        "value": [
+                                            {
+                                                "message": "O campo \"peso\" é requerido. (and 1 more error)",
+                                                "errors": {
+                                                    "peso": [
+                                                        "O campo \"peso\" é requerido."
+                                                    ],
+                                                    "altura": [
+                                                        "O campo \"altura\" é requerido."
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/endereco/{cep}": {
+            "get": {
+                "tags": [
+                    "Endereco"
+                ],
+                "summary": "Constulta endereço pelo CEP",
+                "description": "Constulta endereço pelo CEP",
+                "operationId": "b0ec92fde869651b6887a3936921829f",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "cep",
+                        "in": "path",
+                        "description": "CEP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "cepValido": {
+                                "summary": "CEP Válido",
+                                "value": "01001000"
+                            },
+                            "cepInvalido": {
+                                "summary": "CEP Inválido",
+                                "value": "0100100"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Endereco Encontrado",
+                                        "value": {
+                                            "cep": "01001-000",
+                                            "logradouro": "Praça da Sé",
+                                            "complemento": "lado ímpar",
+                                            "bairro": "Sé",
+                                            "localidade": "São Paulo",
+                                            "uf": "SP",
+                                            "ibge": "3550308",
+                                            "gia": "1004",
+                                            "ddd": "11",
+                                            "siafi": "7107"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "CEP Inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "CEP Inválido",
+                                        "value": {
+                                            "message": "CEP deve ter 8 dígitos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "CEP não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "CEP não encontrado",
+                                        "value": {
+                                            "message": "Deu algo errado na busca deste endereço. Verifique se digitou o CEP corretamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno no servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Erro Interno",
+                                        "value": {
+                                            "message": "Ocorreu um erro inesperado, por favor, tente mais tarde.",
+                                            "error": ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/endereco/estados": {
+            "get": {
+                "tags": [
+                    "Endereco"
+                ],
+                "summary": "Lista de estados brasileiros",
+                "description": "Lista de estados brasileiros",
+                "operationId": "1f4d9d1d3ff43648bfed27717297b794",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Lista de Estados",
+                                        "value": [
+                                            {
+                                                "uf": "AC",
+                                                "nome": "Acre"
+                                            },
+                                            {
+                                                "uf": "AL",
+                                                "nome": "Alagoas"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Sem conteúdo"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ErroResult": {
+                "title": "ErroResult",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "CadastroResult": {
+                "title": "CadastroResult",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "nomeCompleto": {
+                        "type": "string"
+                    },
+                    "dataNascimento": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "sexo": {
+                        "type": "string"
+                    },
+                    "cep": {
+                        "type": "string"
+                    },
+                    "cpf": {
+                        "type": "string"
+                    },
+                    "uf": {
+                        "type": "string"
+                    },
+                    "cidade": {
+                        "type": "string"
+                    },
+                    "logradouro": {
+                        "type": "string"
+                    },
+                    "numeroLogradouro": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
