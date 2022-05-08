@@ -357,7 +357,7 @@ class CadastroController extends Controller
         return [
             'nomeCompleto' => 'required|max:255|min:5',
             'dataNascimento' => 'required|date',
-            'sexo' => 'required|in:M,F',
+            'sexo' => 'required|in:M,F,O',
             'cep' => 'required|size:8',
             'cpf' => 'required|size:11',
             'cidade' => 'required',
