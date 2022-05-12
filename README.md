@@ -14,7 +14,7 @@ Entre na pasta que o projeto foi clonado
 
 Copie o arquivo ".env-example" e salve como ".env"
 
-```cp .env-example .env```
+```cp .env.example .env```
 
 Configure o banco de dados. No arquivo ".env", tem um exemplo de conexão com [sqllite](https://www.sqlite.org/index.html). Crie na sua máquina um arquivo do tipo ".sqlite" e referencie-o no ".env" no parâmetro "DB_DATABASE".
 Ex.:  
