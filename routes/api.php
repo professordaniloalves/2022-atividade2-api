@@ -20,6 +20,7 @@ Route::get('/v1/cadastro/validar/documento/{documento}', [CadastroController::cl
 Route::get('/v1/cadastros', [CadastroController::class, "listarCadastros"]);
 Route::get('/v1/cadastro/{cpf}', [CadastroController::class, "obterCadastro"]);
 Route::post('/v1/cadastro', [CadastroController::class, "salvarCadastro"]);
+Route::put('/v1/cadastro', [CadastroController::class, "atualizarCadastro"]);
 Route::delete('/v1/cadastro/{cpf}', [CadastroController::class, "apagarCadastro"]);
 
 

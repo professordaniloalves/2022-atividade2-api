@@ -285,13 +285,14 @@ class CadastroController extends Controller
      *                     "cidade": "São Paulo",
      *                     "logradouro": "Rua do teste",
      *                     "numeroLogradouro": "202 A",
-     *                     "email": "joao@teste.com"
+     *                     "email": "joao@teste.com",
+     *                     "expectativa": "Ficar magro"
      *                  }
      *             )
      *         )
      *     ),
      *     @OA\Response(response="201", description="Cadastro realizado com sucesso", @OA\JsonContent(@OA\Examples(example="result", value={"message": "Cadastro realizado com sucesso"},summary="Cadastro realizado com sucesso"))),
-     *     @OA\Response(response="400", description="Campo enviado é inválidoo", @OA\JsonContent(@OA\Examples(example="result", value={"message": "Favor informar um E-mail válido"},summary="Campo inválido"))),
+     *     @OA\Response(response="400", description="Campo enviado é inválidoo", @OA\JsonContent(@OA\Examples(example="result", value={"message": "Favor informar um e-mail válido"},summary="Campo inválido"))),
      *     @OA\Response(response="412", description="Pré condição é inválida", @OA\JsonContent(@OA\Examples(example="result", value={"message": "Cadastro realizado com sucesso"},summary="Este documento já foi cadastrado"))),
      *     @OA\Response(response="422", description="Entidade não processável", @OA\JsonContent(@OA\Examples(example="result", value={"message": "O campo ""nome completo"" não pode ter menos de 5 caracteres.", "errors": {}}, summary=""))),
      * ),
@@ -306,7 +307,7 @@ class CadastroController extends Controller
         $cadastro = $this->validate($request, $rules, $customMessages, $niceNames);
 
         if(!filter_var($cadastro['email'], FILTER_VALIDATE_EMAIL)) {
-            return response()->json(["message" =>"Favor informar um E-mail válido"], Response::HTTP_BAD_REQUEST);
+            return response()->json(["message" =>"Favor informar um e-mail válido"], Response::HTTP_BAD_REQUEST);
         }
 
         $documentoValidado = $this->validarCPF($cadastro['cpf']);
@@ -318,7 +319,78 @@ class CadastroController extends Controller
         return response()->json(["message" =>"Cadastro realizado com sucesso!"], Response::HTTP_CREATED);
     }
 
-    private function validarCPF($documento)
+     /**
+     * @OA\Put(
+     *     tags={"Cadastro"},
+     *     summary="Atualizar Cadastro",
+     *     description="Atualiza cadastro no sistema",
+     *     path="/api/v1/cadastro",
+     *     @OA\Parameter(
+     *         description="Accept",
+     *         in="header",
+     *         name="Accept",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="applicationJson", value="application/json", summary="application/json"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 example=
+     *                  {
+     *                     "id": 1,
+     *                     "nomeCompleto": "João Silva",
+     *                     "dataNascimento": "1920-01-01",
+     *                     "sexo": "M",
+     *                     "cep": "05555000",
+     *                     "cpf": "00000000191",
+     *                     "uf": "SP",
+     *                     "cidade": "São Paulo",
+     *                     "logradouro": "Rua do teste",
+     *                     "numeroLogradouro": "202 A",
+     *                     "email": "joao@teste.com",
+     *                     "expectativa": "Ficar obeso"
+     *                  }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response="200", description="Cadastro atualizado com sucesso", @OA\JsonContent(@OA\Examples(example="result", value={"message": "Cadastro atualizado com sucesso"},summary="Cadastro atualizado com sucesso"))),
+     *     @OA\Response(response="400", description="Campo enviado é inválidoo", @OA\JsonContent(@OA\Examples(example="result", value={"message": "Favor informar um e-mail válido"},summary="Campo inválido"))),
+     *     @OA\Response(response="422", description="Entidade não processável", @OA\JsonContent(@OA\Examples(example="result", value={"message": "O campo ""nome completo"" não pode ter menos de 5 caracteres.", "errors": {}}, summary=""))),
+     * ),
+     * 
+     */
+    public function atualizarCadastro(Request $request)
+    {
+        $rules = $this->getRegrasSalvarCadastro();
+        $rules['id'] = 'required';
+        $customMessages = $this->getMensagensCustomizadas();
+        $niceNames = $this->getNomeDeAtributosCustomizadosSalvarCadastro();
+
+        $cadastro = $this->validate($request, $rules, $customMessages, $niceNames);
+
+        if(!filter_var($cadastro['email'], FILTER_VALIDATE_EMAIL)) {
+            return response()->json(["message" =>"Favor informar um e-mail válido"], Response::HTTP_BAD_REQUEST);
+        }
+
+        $documentoValidado = $this->validarCPF($cadastro['cpf'], false);
+
+        if(!$documentoValidado->isValido){
+            return response()->json(["message" => $documentoValidado->message], $documentoValidado->httpResponse);
+        }
+
+        $cadastroModel = Cadastro::find($cadastro["id"]);
+        if(!$cadastroModel){
+            return response()->json(["message" =>"Cadastro informado não localizado. Favor verifique o ID e tente novamente."], Response::HTTP_NOT_FOUND);
+        }
+
+        $cadastroModel->update($cadastro);
+        return response()->json(["message" =>"Cadastro atualizado com sucesso!"], Response::HTTP_OK);
+        
+    }
+
+    private function validarCPF($documento, $isValidarDocumentoJaCadastrado = true)
     {
         $cpf = preg_replace( '/[^0-9]/is', '', $documento);
         if (strlen($cpf) != 11) {
@@ -342,7 +414,7 @@ class CadastroController extends Controller
             }
         }
         
-        if(Cadastro::where(["cpf" => $cpf])->first() != null ){
+        if($isValidarDocumentoJaCadastrado && Cadastro::where(["cpf" => $cpf])->first() != null ){
             return (object) ["isValido" => false, 
                 "message" => "Este documento já foi cadastrado", 
                 "httpResponse" => Response::HTTP_PRECONDITION_FAILED];

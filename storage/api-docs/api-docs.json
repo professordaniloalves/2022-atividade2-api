@@ -306,6 +306,104 @@
             }
         },
         "/api/v1/cadastro": {
+            "put": {
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Atualizar Cadastro",
+                "description": "Atualiza cadastro no sistema",
+                "operationId": "8ff76ab51bd515d90d374ef84331888d",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "applicationJson": {
+                                "summary": "application/json",
+                                "value": "application/json"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "id": 1,
+                                    "nomeCompleto": "João Silva",
+                                    "dataNascimento": "1920-01-01",
+                                    "sexo": "M",
+                                    "cep": "05555000",
+                                    "cpf": "00000000191",
+                                    "uf": "SP",
+                                    "cidade": "São Paulo",
+                                    "logradouro": "Rua do teste",
+                                    "numeroLogradouro": "202 A",
+                                    "email": "joao@teste.com",
+                                    "expectativa": "Ficar obeso"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cadastro atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Cadastro realizado com sucesso",
+                                        "value": {
+                                            "message": "Cadastro realizado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Campo enviado é inválidoo",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "Campo inválido",
+                                        "value": {
+                                            "message": "Favor informar um E-mail válido"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Entidade não processável",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "",
+                                        "value": {
+                                            "message": "O campo \"nome completo\" não pode ter menos de 5 caracteres.",
+                                            "errors": []
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Cadastro"
@@ -344,7 +442,8 @@
                                     "cidade": "São Paulo",
                                     "logradouro": "Rua do teste",
                                     "numeroLogradouro": "202 A",
-                                    "email": "joao@teste.com"
+                                    "email": "joao@teste.com",
+                                    "expectativa": "Ficar magro"
                                 }
                             }
                         }
@@ -449,7 +548,7 @@
                         "application/json": {
                             "schema": {
                                 "example": {
-                                    "peso": "70.2",
+                                    "peso": "70.5",
                                     "altura": "1.71"
                                 }
                             }
